@@ -52,3 +52,70 @@ For support, questions, or feedback regarding the P1 Crew or crewAI.
 - [Chat with our docs](https://chatg.pt/DWjSBZn)
 
 Let's create wonders together with the power and simplicity of crewAI.
+
+
+
+
+Error-Principal
+****************************
+Como puedo resolver este error: The class `Ollama` was deprecated in LangChain 0.3.1 and will be removed in 1.0.0. An updated version of the class exists in the :class:`~langchain-ollama package and should be used instead. To use it run `pip install -U :class:`~langchain-ollama` and import as `from :class:`~langchain_ollama import OllamaLLM``.
+  ollama_llm = Ollama(model="ollama/openhermes")
+
+
+Este error ocurre porque la clase `Ollama` en **LangChain 0.3.1** está obsoleta y se ha movido a un paquete separado llamado `langchain-ollama`. Para solucionarlo, sigue estos pasos:
+
+### **Solución paso a paso:**
+1. **Desinstalar la versión antigua (si es necesario)**  
+   Si tenías una versión previa de `langchain` que incluía `Ollama`, no es necesario desinstalarla, pero puedes asegurarte de tener la última versión.
+
+2. **Instalar el nuevo paquete `langchain-ollama`**  
+   Ejecuta el siguiente comando con **UV** (o `pip` si prefieres):
+   ```bash
+   uv pip install langchain-ollama
+   ```
+
+3. **Actualizar LangChain (opcional pero recomendado)**  
+   Asegúrate de que tienes una versión reciente de LangChain:
+   ```bash
+   uv pip install --upgrade langchain
+   ```
+
+4. **Modificar tu código**  
+   Cambia la importación y el uso de `Ollama` por la nueva clase `OllamaLLM`:
+   ```python
+   # Antes (obsoleto)
+   # from langchain.llms import Ollama
+   # ollama_llm = Ollama(model="ollama/openhermes")
+
+   # Ahora (correcto)
+   from langchain_ollama import Ollama
+   ollama_llm = Ollama(model="openhermes")  # Nota: "ollama/" ya no es necesario en el nombre del modelo
+   ```
+
+   **Nota:**  
+   - El modelo ahora se pasa directamente como `"openhermes"` (sin `ollama/`).  
+   - Si usas un modelo personalizado o uno que requiere prefijo, consulta la [documentación de langchain-ollama](https://python.langchain.com/docs/integrations/llms/ollama).
+
+5. **Verifica que funcione**  
+   Ejecuta tu código nuevamente y el error debería desaparecer.
+
+### **¿Por qué ocurrió esto?**  
+LangChain está modularizando sus integraciones para hacer el paquete principal más ligero. Por eso, `Ollama` se movió a `langchain-ollama`.
+
+Si tienes más problemas, verifica:  
+- Que no hay conflictos entre `langchain` y `langchain-community` (otro paquete que a veces causa confusiones).  
+- Que el modelo `openhermes` está correctamente descargado en tu instancia local de Ollama (usa `ollama pull openhermes` si es necesario).
+
+¿Necesitas ayuda con algo más relacionado con **CrewAI** o **Ollama**? 😊
+
+
+ 
+ ***********************************************************************************
+  Bonus: Usa Uv también para gestionar el entorno
+    Si aún no lo haces, puedes usar Uv también para crear un entorno virtual limpio:
+
+    uv venv
+source .venv/bin/activate  # o el equivalente en Windows
+uv pip install crewai langchain-ollama
+
+*************************************************************************************
